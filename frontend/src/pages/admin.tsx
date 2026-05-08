@@ -94,7 +94,6 @@ export default function AdminPage() {
       }
     });
     setMessage('Product created successfully.');
-    event.currentTarget.reset();
     await load();
   }
 
