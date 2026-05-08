@@ -1,0 +1,25 @@
+{
+  "name": "rentease",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w backend\" \"npm run dev -w frontend\"",
+    "build": "run-s build:backend build:frontend",
+    "build:backend": "npm run build -w backend",
+    "build:frontend": "npm run build -w frontend",
+    "start": "concurrently \"npm run start:prod -w backend\" \"npm run start -w frontend\"",
+    "lint": "run-s lint:backend lint:frontend",
+    "lint:backend": "npm run lint -w backend",
+    "lint:frontend": "npm run lint -w frontend",
+    "seed": "npm run seed -w backend"
+  },
+  "devDependencies": {
+    "ajv": "^8.18.0",
+    "concurrently": "^9.1.2",
+    "npm-run-all2": "^7.0.2"
+  }
+}
