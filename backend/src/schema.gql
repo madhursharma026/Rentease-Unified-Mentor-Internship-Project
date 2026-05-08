@@ -1,0 +1,218 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AuthPayload {
+  accessToken: String!
+  user: User!
+}
+
+input CartItemInput {
+  productId: ID!
+  quantity: Int!
+  tenureMonths: Int!
+}
+
+type CartSummary {
+  totalDeposit: Float!
+  totalMonthlyRent: Float!
+}
+
+enum Category {
+  APPLIANCES
+  FURNITURE
+}
+
+input CheckoutInput {
+  deliveryAddress: String!
+  deliveryDate: String!
+  items: [CartItemInput!]!
+}
+
+type DashboardMetrics {
+  activeRentals: Int!
+  collectedDeposits: Float!
+  monthlyRecurringRent: Float!
+  openMaintenanceRequests: Int!
+  totalProducts: Int!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type MaintenanceRequest {
+  assignedTo: String
+  createdAt: DateTime!
+  description: String!
+  id: ID!
+  product: Product
+  rental: Rental
+  status: MaintenanceStatus!
+  subject: String!
+  updatedAt: DateTime!
+  user: User!
+}
+
+input MaintenanceRequestInput {
+  description: String!
+  rentalId: ID
+  subject: String!
+}
+
+enum MaintenanceStatus {
+  ASSIGNED
+  CANCELLED
+  OPEN
+  RESOLVED
+}
+
+type Mutation {
+  checkout(input: CheckoutInput!): Order!
+  createMaintenanceRequest(input: MaintenanceRequestInput!): MaintenanceRequest!
+  createProduct(input: ProductInput!): Product!
+  login(input: LoginInput!): AuthPayload!
+  register(input: RegisterInput!): AuthPayload!
+  updateMaintenanceRequest(id: ID!, input: UpdateMaintenanceInput!): MaintenanceRequest!
+  updateOrderStatus(id: String!, status: OrderStatus!): Order!
+  updateProduct(id: ID!, input: ProductInput!): Product!
+}
+
+type Order {
+  createdAt: DateTime!
+  deliveryAddress: String!
+  deliveryDate: DateTime!
+  id: ID!
+  items: [OrderItem!]!
+  status: OrderStatus!
+  totalDeposit: Float!
+  totalMonthlyRent: Float!
+  user: User!
+}
+
+type OrderItem {
+  deposit: Float!
+  id: ID!
+  monthlyRent: Float!
+  product: Product!
+  quantity: Int!
+  tenureMonths: Int!
+}
+
+enum OrderStatus {
+  CANCELLED
+  CONFIRMED
+  DELIVERED
+  OUT_FOR_DELIVERY
+  PENDING
+}
+
+type Product {
+  category: Category!
+  createdAt: DateTime!
+  deposit: Float!
+  description: String!
+  id: ID!
+  imageUrl: String!
+  inventoryCount: Int!
+  isActive: Boolean!
+  monthlyRent: Float!
+  name: String!
+  slug: String!
+  tenureOptions: [Int!]!
+}
+
+input ProductFilterInput {
+  category: Category
+  limit: Int! = 12
+  maxRent: Float
+  minRent: Float
+  page: Int! = 1
+  search: String
+}
+
+input ProductInput {
+  category: Category!
+  deposit: Float!
+  description: String!
+  imageUrl: String!
+  inventoryCount: Int!
+  isActive: Boolean
+  monthlyRent: Float!
+  name: String!
+  tenureOptions: [Int!]!
+}
+
+type ProductPage {
+  items: [Product!]!
+  limit: Int!
+  page: Int!
+  total: Int!
+}
+
+type Query {
+  activeRentals: [Rental!]!
+  adminActiveRentals: [Rental!]!
+  cartSummary(items: [CartItemInput!]!): CartSummary!
+  dashboardMetrics: DashboardMetrics!
+  maintenanceRequests: [MaintenanceRequest!]!
+  me: User!
+  myMaintenanceRequests: [MaintenanceRequest!]!
+  myOrders: [Order!]!
+  orders: [Order!]!
+  product(slug: String!): Product!
+  products(filter: ProductFilterInput): ProductPage!
+  rentalHistory: [Rental!]!
+}
+
+input RegisterInput {
+  email: String!
+  name: String!
+  password: String!
+  phone: String
+  role: Role
+}
+
+type Rental {
+  createdAt: DateTime!
+  endDate: DateTime!
+  id: ID!
+  order: Order!
+  product: Product!
+  startDate: DateTime!
+  status: RentalStatus!
+  tenureMonths: Int!
+  user: User!
+}
+
+enum RentalStatus {
+  ACTIVE
+  CANCELLED
+  COMPLETED
+}
+
+enum Role {
+  ADMIN
+  CUSTOMER
+  VENDOR
+}
+
+input UpdateMaintenanceInput {
+  assignedTo: String
+  status: MaintenanceStatus!
+}
+
+type User {
+  createdAt: DateTime!
+  email: String!
+  id: ID!
+  name: String!
+  phone: String
+  role: Role!
+}
